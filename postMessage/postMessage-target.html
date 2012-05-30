@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+   <title></title>
+   <style type="text/css">
+   </style>
+</head>
+<body>
+
+<p id="test">send me a message: </p>
+
+   <script type="text/javascript">
+
+   var addEvent = (function(){
+       if(document.addEventListener) {
+          return function(el, evType, fn, useCapture) {
+                 if(el && el.nodeName  || el == window) {
+                    el.addEventListener(evType, fn, useCapture); 
+                 } else if(el && el.length){
+                   for(var i=0; i < el.length;i++) {
+                       addEvent(el[i], evType, fn, useCapture);
+                   }
+                 }
+          };
+       } else {
+       }   
+   })();
+
+
+   addEvent(window,"message",function(event){
+
+      if(event.origin !== 'http://thinkphp.ro') {return;} 
+
+      document.getElementById('test').innerHTML = event.origin + ' said: ' + event.data;
+
+      event.source.postMessage("got it, thanks", event.origin);
+  
+   }, false);
+
+  </script>
+
+</body>
+</html>
